@@ -40,3 +40,9 @@ func (m *micro) Init(srcHost string, srcPort int) {
 func (m *micro) GetEtcdRegistry() registry.Registry {
 	return m.etcd.registry
 }
+
+func (m *micro) LoadSource() {
+	if err := m.Config.Load(m.Source); err != nil {
+		panic(err)
+	}
+}
