@@ -26,6 +26,7 @@ var microServices struct {
 }
 
 func EtcdAddr() string {
+	return "192.168.1.38:2379"
 	url := fmt.Sprintf("%s:%d", Configs.Etcd.Host, Configs.Etcd.Port)
 	return url
 }

@@ -13,12 +13,11 @@ require (
 	github.com/golang/protobuf v1.4.2
 	github.com/jinzhu/configor v1.2.0
 	github.com/jinzhu/gorm v1.9.12
-	github.com/micro/go-micro/v2 v2.9.0
+	github.com/micro/go-micro/v2 v2.9.1
 	github.com/micro/go-plugins v1.5.1
 	github.com/micro/go-plugins/broker/rabbitmq/v2 v2.8.0
 	github.com/micro/go-plugins/registry/kubernetes/v2 v2.8.0
 	github.com/micro/go-plugins/transport/nats/v2 v2.8.0
-	github.com/micro/micro v1.18.0 // indirect
 	github.com/mitchellh/mapstructure v1.3.2
 	github.com/rogierlommers/logrus-redis-hook v0.0.0-20200302072909-4231d5052bd1
 	github.com/shopspring/decimal v1.2.0 // indirect
