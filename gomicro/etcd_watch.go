@@ -7,18 +7,11 @@ import (
 )
 
 func main(){
-	utils.Micro.Init("192.168.1.38",2379)
-
-	config,source := utils.Micro.Config,utils.Micro.Source
-
-	// load source
-	if err := config.Load(source); err != nil {
-		glog.Errorln(err)
-		return
-	}
+	utils.Micro.Init()
+	utils.Micro.LoadSource()
 
 	// watch
-	watcher,err := config.Watch("micro","config","redis-cluster")
+	watcher,err := utils.Micro.Config.Watch("micro","config","redis-cluster")
 	if err != nil {
 		glog.Errorln(err)
 		return
@@ -34,11 +27,11 @@ func main(){
 		watcher.Next()
 
 		// 获取改变前的值
-		val := config.Get("micro","config","redis-cluster")
+		val := utils.Micro.Config.Get("micro","config","redis-cluster")
 		fmt.Printf("This is an old val : %s\n",string(val.Bytes()))
 
 		// 获取改变后的值
-		val = config.Get("micro","config","redis-cluster")
+		val = utils.Micro.Config.Get("micro","config","redis-cluster")
 		fmt.Printf("This is an new val : %s\n",string(val.Bytes()))
 	}
 }

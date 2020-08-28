@@ -3,8 +3,8 @@ package config
 import (
 	"bytes"
 	"encoding/json"
+	"examples/utils"
 	"fmt"
-	"github.com/utils"
 )
 
 var TenantServiceConfig = &tenantServiceConfig{serviceName: "tenant-service"}
@@ -15,7 +15,7 @@ type tenantServiceConfig struct {
 }
 
 func (c *tenantServiceConfig) LoadFromMicroSourceEtcd() {
-	val := utils.Micro.Config.Get("micro", "config", fmt.Sprintf("%s-config",c.serviceName))
+	val := utils.Micro.Config.Get("micro", "config", fmt.Sprintf("%s-config", c.serviceName))
 	if bytes.Equal(val.Bytes(), []byte("null")) {
 		panic(fmt.Sprintf("tenant-service config is %v", string(val.Bytes())))
 	}
