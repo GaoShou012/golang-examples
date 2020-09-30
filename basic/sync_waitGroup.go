@@ -20,11 +20,25 @@ func main(){
 		wg.Done() 结束一个任务，等待的任务数量就减1
 	*/
 	fmt.Println("begin",time.Now())
-	wg.Add(1)
 
+
+	wg.Add(1)
 	go func() {
-		defer wg.Done()
+		defer func() {
+			wg.Done()
+			fmt.Println("second * 3")
+		}()
+
 		time.Sleep(time.Second*3)
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer func() {
+			wg.Done()
+			fmt.Println("second * 10")
+		}()
+		time.Sleep(time.Second*10)
 	}()
 
 	wg.Wait()

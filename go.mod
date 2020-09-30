@@ -13,6 +13,7 @@ require (
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
+	github.com/google/wire v0.4.0
 	github.com/jinzhu/configor v1.2.0
 	github.com/jinzhu/gorm v1.9.12
 	github.com/micro/go-micro/v2 v2.9.1
