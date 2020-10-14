@@ -6,10 +6,11 @@ import (
 )
 
 type Service struct {
-	Redis *redis.ClusterClient
-	DB    *gorm.DB
+	//Addr     string
+	Redis    *redis.ClusterClient
+	DB       *gorm.DB
+	ServiceA *ServiceA
 }
 
-func NewService(redis *redis.ClusterClient) *Service {
-	return &Service{Redis: redis}
+type ServiceA struct {
 }

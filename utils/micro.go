@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	micro "github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/client"
 	microconfig "github.com/micro/go-micro/v2/config"
 	"github.com/micro/go-micro/v2/config/source"
 	microsourceetcd "github.com/micro/go-micro/v2/config/source/etcd"
 	"github.com/micro/go-micro/v2/registry"
+	"time"
 )
 
 var Micro microI
@@ -22,11 +24,11 @@ type MicroServiceConfig interface {
 }
 
 type microI struct {
-	Service micro.Service
-	Config  microconfig.Config
-	Source  source.Source
-
-	etcd struct {
+	Service               micro.Service
+	Config                microconfig.Config
+	Source                source.Source
+	DefaultCliCallOptions client.CallOption
+	etcd                  struct {
 		addr     string
 		registry registry.Registry
 	}
@@ -45,6 +47,20 @@ func (m *microI) Init(service micro.Service) {
 	}
 	m.Config = conf
 	m.Source = microsourceetcd.NewSource(microsourceetcd.WithAddress(service.Options().Registry.Options().Addrs[0]))
+
+	m.DefaultCliCallOptions = func(options *client.CallOptions) {
+		options.RequestTimeout = time.Second * 3
+		options.DialTimeout = time.Second * 3
+	}
+}
+
+func (m *microI) EtcdRegistry(addr string) {
+	conf,err := microconfig.NewConfig()
+	if err != nil {
+		panic(err)
+	}
+	m.Config = conf
+	m.Source = microsourceetcd.NewSource(microsourceetcd.WithAddress(addr))
 }
 
 func (m *microI) LoadSource() {
@@ -65,13 +81,26 @@ func (m *microI) LoadConfig(c MicroConfig) error {
 	}
 	return nil
 }
-func (m *microI) LoadConfigMust(c MicroConfig) {
-	fmt.Println("Loading Config", c.ConfigKey())
-	val := m.Config.Get("micro", "config", c.ConfigKey())
+
+//func (m *microI) LoadConfigMust(c MicroConfig) {
+//	fmt.Printf("Loading Config: %s ...", c.ConfigKey())
+//	val := m.Config.Get("micro", "config", c.ConfigKey())
+//	if bytes.Equal(val.Bytes(), []byte("null")) {
+//		panic(fmt.Errorf("%s is null", c.ConfigKey()))
+//	}
+//	if err := json.Unmarshal(val.Bytes(), c); err != nil {
+//		panic(err)
+//	}
+//	fmt.Printf("ok\n")
+//}
+func (m *microI) LoadConfigMust(v interface{}, key string) {
+	fmt.Printf("Loading Config: %s ...", key)
+	val := m.Config.Get("micro", "config", key)
 	if bytes.Equal(val.Bytes(), []byte("null")) {
-		panic(fmt.Errorf("%s is null", c.ConfigKey()))
+		panic(fmt.Errorf("nok is null\n"))
 	}
-	if err := json.Unmarshal(val.Bytes(), c); err != nil {
+	if err := json.Unmarshal(val.Bytes(), v); err != nil {
 		panic(err)
 	}
+	fmt.Printf("ok\n")
 }

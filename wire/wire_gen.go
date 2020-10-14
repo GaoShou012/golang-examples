@@ -11,16 +11,73 @@ import (
 
 // Injectors from wire.go:
 
-func Init() *Service {
+func NewService() *Service {
 	clusterClient := NewRedis()
 	db := NewMysql()
+	serviceA := &ServiceA{}
 	service := &Service{
-		Redis: clusterClient,
-		DB:    db,
+		Redis:    clusterClient,
+		DB:       db,
+		ServiceA: serviceA,
 	}
 	return service
 }
 
+func injectFoo() *Foo {
+	fx := _wireFXValue
+	foo := &Foo{
+		FX: fx,
+	}
+	return foo
+}
+
+var (
+	_wireFXValue = FX(123)
+)
+
+func newFABC() *Fabc {
+	fx := _wireFXValue
+	fabc := &Fabc{
+		FX: fx,
+	}
+	return fabc
+}
+
+func InitPlayer() *Player {
+	mission := NewMission()
+	player := mission.Player
+	return player
+}
+
+func InitMonster() *Monster {
+	mission := NewMission()
+	monster := mission.Monster
+	return monster
+}
+
+func initMovie() *Movie {
+	director := NewDirector1()
+	string2 := director.Name
+	movie := &Movie{
+		Director: string2,
+	}
+	return movie
+}
+
 // wire.go:
 
-var utils = wire.NewSet(NewRedis, NewMysql)
+type Foo struct {
+	FX
+}
+
+type Fabc struct {
+	FX
+}
+
+type FX int
+
+var pset = wire.NewSet(wire.Value(FX(123)))
+
+var p1set = wire.NewSet(wire.Struct(new(Foo), "*"))
+
+var Set1 = wire.NewSet(NewDirector1)
