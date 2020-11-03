@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	address := []string{"192.168.1.200:9092", "192.168.1.200:9093"}
+	address := []string{"192.168.56.101:9092","192.168.56.101:9093", "192.168.56.101:9094"}
 	topics := []string{"im-room"}
 	group := "group-2"
 	//var wg = &sync.WaitGroup{}
