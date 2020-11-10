@@ -22,6 +22,7 @@ require (
 	github.com/micro/go-plugins/registry/kubernetes/v2 v2.8.0
 	github.com/micro/go-plugins/transport/nats/v2 v2.8.0
 	github.com/mitchellh/mapstructure v1.3.2
+	github.com/mojocn/base64Captcha v1.3.1 // indirect
 	github.com/rogierlommers/logrus-redis-hook v0.0.0-20200302072909-4231d5052bd1
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.4.2
